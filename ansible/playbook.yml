@@ -1,0 +1,36 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Configure Docker
+      apt:
+        name: docker.io
+        state: present
+      become: true
+
+    - name: Install Docker Python module
+      pip:
+        name: docker
+        state: present
+      become: true
+
+    - name: Start Geth container
+      docker_container:
+        name: geth
+        image: ethereum/client-go
+        ports:
+          - "8545:8545"
+        volumes:
+          - /data:/root/.ethereum
+        restart_policy: always
+      become: true
+
+    - name: Wait for Geth client to synchronize
+      wait_for_connection:
+        host: localhost
+        port: 8545
+        delay: 10
+        timeout: 300
+
+    - name: Activate validator functionality
+      shell: |
+        geth attach http://localhost:8545 --exec "eth.sendTransaction({from: '<validator_address>', to: '<staking_contract_address>', value: <staking_amount>})"
