@@ -1,7 +1,8 @@
 # Automating the setup of Private Blockchain
 ![image](https://github.com/devgprime/NodeAutomationBlockchain/assets/131144462/08abad9b-eca9-4fcf-b764-b2f77149f61b)
 
-Request Provisioning: The user submits a provisioning request through a UI or Azure Pipeline. This request includes the desired node configurations and quantity.
+Ethereum Validator Node Provisioning on Azure
+This project automates the provisioning and management of Ethereum validator nodes on Azure, ensuring secure and efficient participation in a private Ethereum network.
 
 Initially a user just needs to run the script setup.sh through the command ./setup.sh which will internally call a serires of processes defined below:-
 
