@@ -1,17 +1,19 @@
 - hosts: all
   become: true
   tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
     - name: Configure Docker
       apt:
         name: docker.io
         state: present
-      become: true
 
     - name: Install Docker Python module
       pip:
         name: docker
         state: present
-      become: true
 
     - name: Start Geth container
       docker_container:
@@ -22,10 +24,9 @@
         volumes:
           - /data:/root/.ethereum
         restart_policy: always
-      become: true
 
     - name: Wait for Geth client to synchronize
-      wait_for_connection:
+      wait_for:
         host: localhost
         port: 8545
         delay: 10
